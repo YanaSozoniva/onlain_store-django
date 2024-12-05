@@ -30,7 +30,7 @@ class Product(models.Model):
     )
     photo_product = models.ImageField(upload_to="photos/", verbose_name="Изображение", blank=True, null=True)
     price = models.DecimalField(
-        decimal_places=2, verbose_name="Цена", help_text="Укажите цену за покупку товара", default=0
+        max_digits=10, decimal_places=2, verbose_name="Цена", help_text="Укажите цену за покупку товара", default=0
     )
     category = models.ForeignKey(
         to=Category,
