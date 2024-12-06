@@ -62,7 +62,7 @@ class Contact(models.Model):
     """Класс для создания модели(таблицы) контакты"""
 
     country = models.CharField(max_length=50, verbose_name="Страна", help_text="Введите название страны")
-    address = models.CharField(max_length=150, verbose_name="Адрес", help_text="Введите Ваш адрес", black=True, null=True)
+    address = models.CharField(max_length=150, verbose_name="Адрес", help_text="Введите Ваш адрес", blank=True, null=True)
     individual_tax_index = models.IntegerField(verbose_name='ИНН', blank=True, null=True)
 
     def __str__(self):
