@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from catalog.models import Product
+from catalog.models import Product, Contact
 
 
 def home(request):
@@ -15,10 +15,11 @@ def home(request):
 
 
 def contacts(request):
+    contact = Contact.objects.all()
     if request.method == 'POST':
         name = request.POST.get('name')
         message = request.POST.get('message')
         phone = request.POST.get("phone")
         print(f'POST-запрос от пользователя: {name}, тел: {phone}, сообщение: {message}')
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-    return render(request, 'catalog/contacts.html')
+    return render(request, 'catalog/contacts.html', {'contact': contact})

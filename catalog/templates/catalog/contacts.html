@@ -26,18 +26,20 @@
             <div class="card mb-4 box-shadow">
                 <div class="card-body">
                     <table class="table table-striped">
+                        {% for con in contact %}
                         <tr>
                             <td class="w-25">Страна</td>
-                            <td>USA</td>
+                            <td>{{ con.country }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">ИНН</td>
-                            <td>91-1144442</td>
+                            <td>{{ con.individual_tax_index }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Адрес</td>
-                            <td>Redmond,WA,98052-6399</td>
+                            <td>{{ con.address }}</td>
                         </tr>
+                        {% endfor %}
                     </table>
                 </div>
             </div>
