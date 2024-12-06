@@ -1,8 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from catalog.models import Product
 
 
 def home(request):
+    # Получаем последние 5 созданных продуктов
+    latest_products = Product.objects.order_by('-created_at')[:5]
+
+    # Выводим продукты в консоль
+    for product in latest_products:
+        print(product)
+
     return render(request, 'catalog/home.html')
 
 
