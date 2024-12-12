@@ -3,15 +3,16 @@ from django.shortcuts import render, get_object_or_404
 from catalog.models import Product, Contact
 
 
-def home(request):
+def products_list(request):
     # Получаем последние 5 созданных продуктов
-    latest_products = Product.objects.order_by('-created_at')[:5]
-
+    # latest_products = Product.objects.order_by('-created_at')[:5]
+    latest_products = Product.objects.all()
+    context = {'products': latest_products}
     # Выводим продукты в консоль
-    for product in latest_products:
-        print(product)
+    # for product in latest_products:
+    #     print(product)
 
-    return render(request, 'catalog/home.html')
+    return render(request, 'catalog/products_list.html', context)
 
 
 def contacts(request):
