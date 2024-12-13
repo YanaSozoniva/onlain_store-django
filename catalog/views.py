@@ -2,13 +2,19 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from catalog.models import Product, Contact
 from catalog.forms import AddProduct
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def products_list(request):
     # Получаем последние 5 созданных продуктов
     # latest_products = Product.objects.order_by('-created_at')[:5]
-    latest_products = Product.objects.all()
-    context = {'products': latest_products}
+    products = Product.objects.all()
+    # постраничные вывод списка товаров по 3 на одной странице
+    paginator = Paginator(products, 3)
+    # Получаем номер страницы
+    page_number = request.GET.get('page')
+    product_page = paginator.get_page(page_number)
+    context = {"product_page": product_page}
     # Выводим продукты в консоль
     # for product in latest_products:
     #     print(product)
