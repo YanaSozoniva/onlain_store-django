@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from catalog.models import Product, Contact
+from catalog.forms import AddProduct
 
 
 def products_list(request):
@@ -30,3 +31,15 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = {'product': product}
     return render(request, 'catalog/product_detail.html', context)
+
+
+def add_product(request):
+    if request.method == 'POST':
+        form = AddProduct(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()  # Сохранить модель в базе данных
+            return redirect('/')  # Перенаправить на другую страницу
+    else:
+        form = AddProduct()
+
+    return render(request, 'catalog/add_product.html', {'form': form})
