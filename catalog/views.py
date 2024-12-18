@@ -2,24 +2,38 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from catalog.models import Product, Contact
 from catalog.forms import AddProduct
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+# from django.core.paginator import Paginator
+from django.views.generic import ListView
 
 
-def products_list(request):
-    # Получаем последние 5 созданных продуктов
-    # latest_products = Product.objects.order_by('-created_at')[:5]
-    products = Product.objects.all()
-    # постраничные вывод списка товаров по 3 на одной странице
-    paginator = Paginator(products, 3)
-    # Получаем номер страницы
-    page_number = request.GET.get('page')
-    product_page = paginator.get_page(page_number)
-    context = {"product_page": product_page}
-    # Выводим продукты в консоль
-    # for product in latest_products:
-    #     print(product)
+class CatalogListViews(ListView):
+    model = Product
+    template_name = 'product_list.html'
+    paginate_by = 3
 
-    return render(request, 'catalog/products_list.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.paginate_by:
+            paginator = context['paginator']
+            context['is_paginated'] = paginator.num_pages > 1
+        return context
+
+
+# def products_list(request):
+#     # Получаем последние 5 созданных продуктов
+#     # latest_products = Product.objects.order_by('-created_at')[:5]
+#     products = Product.objects.all()
+#     # постраничные вывод списка товаров по 3 на одной странице
+#     paginator = Paginator(products, 3)
+#     # Получаем номер страницы
+#     page_number = request.GET.get('page')
+#     product_page = paginator.get_page(page_number)
+#     context = {"product_page": product_page}
+#     # Выводим продукты в консоль
+#     # for product in latest_products:
+#     #     print(product)
+#
+#     return render(request, 'catalog/products_list.html', context)
 
 
 def contacts(request):
