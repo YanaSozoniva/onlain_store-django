@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from catalog.models import Product, Contact
 from catalog.forms import AddProduct
 # from django.core.paginator import Paginator
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 
 class CatalogListViews(ListView):
@@ -35,26 +35,38 @@ class CatalogListViews(ListView):
 #
 #     return render(request, 'catalog/products_list.html', context)
 
+class ContactViews(TemplateView):
+    template_name = 'catalog/contacts.html'
 
-def contacts(request):
-    contact = Contact.objects.all()
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        message = request.POST.get('message')
-        phone = request.POST.get("phone")
-        print(f'POST-запрос от пользователя: {name}, тел: {phone}, сообщение: {message}')
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-    return render(request, 'catalog/contacts.html', {'contact': contact})
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            name = self.request.POST.get('name')
+            message = self.request.POST.get('message')
+            phone = self.request.POST.get("phone")
+            print(f'POST-запрос от пользователя: {name}, тел: {phone}, сообщение: {message}')
+        context_data['contact'] = Contact.objects.all()[0]
+        return context_data
+
+# def contacts(request):
+#     contact = Contact.objects.all()
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         message = request.POST.get('message')
+#         phone = request.POST.get("phone")
+#         print(f'POST-запрос от пользователя: {name}, тел: {phone}, сообщение: {message}')
+#         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+#     return render(request, 'catalog/contacts.html', {'contact': contact})
 
 
 class CatalogDetailViews(DetailView):
     model = Product
 
 
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {'product': product}
-    return render(request, 'catalog/product_detail.html', context)
+# def product_detail(request, pk):
+#     product = get_object_or_404(Product, pk=pk)
+#     context = {'product': product}
+#     return render(request, 'catalog/product_detail.html', context)
 
 
 def add_product(request):

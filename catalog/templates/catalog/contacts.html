@@ -11,20 +11,18 @@
             <div class="card mb-4 box-shadow">
                 <div class="card-body">
                     <table class="table table-striped">
-                        {% for con in contact %}
                         <tr>
                             <td class="w-25">Страна</td>
-                            <td>{{ con.country }}</td>
+                            <td>{{ contact.country }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">ИНН</td>
-                            <td>{{ con.individual_tax_index }}</td>
+                            <td>{{ contact.individual_tax_index }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Адрес</td>
-                            <td>{{ con.address }}</td>
+                            <td>{{ contact.address }}</td>
                         </tr>
-                        {% endfor %}
                     </table>
                 </div>
             </div>
