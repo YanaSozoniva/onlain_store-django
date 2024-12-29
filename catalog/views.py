@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from catalog.models import Product, Contact
 from catalog.forms import AddProduct
 # from django.core.paginator import Paginator
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 class CatalogListViews(ListView):
@@ -45,6 +45,10 @@ def contacts(request):
         print(f'POST-запрос от пользователя: {name}, тел: {phone}, сообщение: {message}')
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
     return render(request, 'catalog/contacts.html', {'contact': contact})
+
+
+class CatalogDetailViews(DetailView):
+    model = Product
 
 
 def product_detail(request, pk):
