@@ -1,9 +1,9 @@
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+
 from catalog.models import Product, Contact
 from catalog.forms import AddProduct
-# from django.core.paginator import Paginator
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView
 
 
 class CatalogListViews(ListView):
@@ -69,13 +69,24 @@ class CatalogDetailViews(DetailView):
 #     return render(request, 'catalog/product_detail.html', context)
 
 
-def add_product(request):
-    if request.method == 'POST':
-        form = AddProduct(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()  # Сохранить модель в базе данных
-            return redirect('/')  # Перенаправить на другую страницу
-    else:
-        form = AddProduct()
+class CatalogCreateView(CreateView):
+    model = Product
+    fields = ['name', 'photo_product', 'price', 'category']
+    success_url = reverse_lazy('catalog:product_list')
 
-    return render(request, 'catalog/add_product.html', {'form': form})
+
+# def add_product(request):
+#     if request.method == 'POST':
+#         form = AddProduct(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()  # Сохранить модель в базе данных
+#             return redirect('/')  # Перенаправить на другую страницу
+#     else:
+#         form = AddProduct()
+#
+#     return render(request, 'catalog/add_product.html', {'form': form})
+
+
+class CatalogDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:product_list')
