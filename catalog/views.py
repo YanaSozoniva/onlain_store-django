@@ -1,8 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-
 from catalog.models import Product, Contact
-from catalog.forms import AddProduct
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView
 
 

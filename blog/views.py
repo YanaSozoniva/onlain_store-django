@@ -1,5 +1,27 @@
-from django.shortcuts import render
+from django.urls import reverse_lazy
+
+from blog.models import Blog
+from django.views.generic import ListView, DetailView, CreateView
 
 
-def home(request):
-    return render(request, 'blog/home.html')
+class BlogListViews(ListView):
+    model = Blog
+    template_name = 'blog_list.html'
+    paginate_by = 3
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.paginate_by:
+            paginator = context['paginator']
+            context['is_paginated'] = paginator.num_pages > 1
+        return context
+
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+
+class BlogCreateView(CreateView):
+    model = Blog
+    fields = ['title', 'photo', 'content', 'is_published']
+    success_url = reverse_lazy('blog:blog_list')

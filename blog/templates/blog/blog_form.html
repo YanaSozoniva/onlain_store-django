@@ -1,0 +1,23 @@
+{% extends 'blog/home.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <h1>Новый статья</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Выводим форму -->
+
+        <button type="submit">Добавить</button>
+         <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary">Отмена</a>
+    </ul>
+    </form>
+</body>
+</html>
+{% endblock %}
