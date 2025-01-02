@@ -16,6 +16,8 @@ class BlogListViews(ListView):
             context['is_paginated'] = paginator.num_pages > 1
         return context
 
+    def get_queryset(self):
+        return Blog.objects.filter(is_published=True)
 
 class BlogDetailView(DetailView):
     model = Blog

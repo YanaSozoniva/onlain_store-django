@@ -16,7 +16,7 @@
                     <p>Дата создания: {{ blog.created_at | date:"d M Y" }}</p>
                     <p>Описание: {{ blog.content }}</p>
                     <p>Статус:
-                        {% if blog.content == True %}
+                        {% if blog.is_published %}
                             Опубликовано
                          {% else %}
                              Не опубликовано
