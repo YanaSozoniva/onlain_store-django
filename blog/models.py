@@ -11,3 +11,11 @@ class Blog (models.Model):
         verbose_name="Количество просмотров",
         default=0
     )
+
+    def __str__(self):
+        return f'{self.title} создано: {self.created_at}, количество просмотров: {self.views_counter}'
+
+    class Meta:
+        verbose_name = 'статья'
+        verbose_name_plural = 'статьи'
+        ordering = ['title']
