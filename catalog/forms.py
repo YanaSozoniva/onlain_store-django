@@ -1,9 +1,10 @@
-from django import forms
+from django.forms import ModelForm
 from catalog.models import Product
 
 
-class AddProduct(forms.ModelForm):
+class ProductForm(ModelForm):
     """Класс для создания формы (добавления нового товара)"""
+
     class Meta:
         model = Product
-        fields = ['name', 'description', 'photo_product', 'category', 'price']
+        fields = ["name", "description", "photo_product", "category", "price"]
