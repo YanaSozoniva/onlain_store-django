@@ -1,4 +1,5 @@
-from django.forms import ModelForm, BooleanField
+from django.core.validators import FileExtensionValidator
+from django.forms import ModelForm, BooleanField, FileField
 from django.core.exceptions import ValidationError
 
 from catalog.models import Product
