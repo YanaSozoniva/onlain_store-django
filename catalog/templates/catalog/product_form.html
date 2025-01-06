@@ -8,16 +8,43 @@
     <title>Title</title>
 </head>
 <body>
- <h1>Новый продукт</h1>
+<div class="container">
+ <h1>{% if object %}
+     Редактировать информацию о продукте
+     {% else %}
+     Новый продукт
+     {% endif %}</h1>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}  <!-- Выводим форму -->
 
-        <button type="submit">Добавить</button>
+        {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            <div>{{ field }}</div>
+            {% if field.errors%}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+
+
+        <button type="submit">
+             {% if object %}
+                 Сохранить
+                 {% else %}
+                 Добавить
+                {% endif %}
+        </button>
          <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Отмена</a>
     </ul>
+
     </form>
+  </div>
 </body>
 </html>
 {% endblock %}

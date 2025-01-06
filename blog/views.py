@@ -6,18 +6,19 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 
 class BlogListViews(ListView):
     model = Blog
-    template_name = 'blog_list.html'
+    template_name = "blog_list.html"
     paginate_by = 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.paginate_by:
-            paginator = context['paginator']
-            context['is_paginated'] = paginator.num_pages > 1
+            paginator = context["paginator"]
+            context["is_paginated"] = paginator.num_pages > 1
         return context
 
     def get_queryset(self):
         return Blog.objects.filter(is_published=True)
+
 
 class BlogDetailView(DetailView):
     model = Blog
@@ -31,19 +32,19 @@ class BlogDetailView(DetailView):
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ['title', 'photo', 'content', 'is_published']
-    success_url = reverse_lazy('blog:blog_list')
+    fields = ["title", "photo", "content", "is_published"]
+    success_url = reverse_lazy("blog:blog_list")
 
 
 class BlogDeleteView(DeleteView):
     model = Blog
-    success_url = reverse_lazy('blog:blog_list')
+    success_url = reverse_lazy("blog:blog_list")
 
 
 class BlogUpdateView(UpdateView):
     model = Blog
-    fields = ['title', 'photo', 'content', 'is_published']
-    success_url = reverse_lazy('dogs:dog_list')
+    fields = ["title", "photo", "content", "is_published"]
+    success_url = reverse_lazy("dogs:dog_list")
 
     def get_success_url(self):
-        return reverse('blog:blog_detail', args=[self.kwargs.get('pk')])
+        return reverse("blog:blog_detail", args=[self.kwargs.get("pk")])
