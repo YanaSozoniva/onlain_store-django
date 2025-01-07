@@ -1,4 +1,5 @@
 from django.db import models
+from catalog.validator import FileSizeValidator, ImageFormatValidator
 
 
 class Category(models.Model):
@@ -28,7 +29,8 @@ class Product(models.Model):
     description = models.TextField(
         verbose_name="Описание товара", help_text="Введите описание товара", blank=True, null=True
     )
-    photo_product = models.ImageField(upload_to="photos/", verbose_name="Изображение", blank=True, null=True)
+    photo_product = models.ImageField(upload_to="photos/", validators=[FileSizeValidator(), ImageFormatValidator()],
+                                      verbose_name="Изображение", blank=True, null=True)
     price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="Цена", help_text="Укажите цену за покупку товара", default=0
     )
