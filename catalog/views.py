@@ -53,4 +53,3 @@ class CatalogUpdateView(UpdateView):
 class CatalogDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
-
