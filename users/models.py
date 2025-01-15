@@ -4,6 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(unique=True, verbose_name="Email")
     phone = PhoneNumberField(
         verbose_name="Телефон", null=True, blank=True, help_text="Введите номер телефона"
