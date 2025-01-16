@@ -17,14 +17,16 @@
                 </div>
                 <div class="card-body">
                     <p>Описание: {{ product.description | truncatechars:100 }}</p>
+                    {% if user.is_authenticated %}
                     <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}" role="button">Подробнее</a>
                     <a class="btn btn-primary" href="{% url 'catalog:product_delete' product.pk %}" role="button">Удалить</a>
                     <a class="btn btn-primary" href="{% url 'catalog:product_update' product.pk %}" role="button">Редактировать</a>
+                    {% endif %}
                 </div>
             </div>
 
-        </div>
- {% endfor %}
+            </div>
+            {% endfor %}
     </div>
 
 </div>
