@@ -51,6 +51,10 @@ class Product(models.Model):
     created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
     updated_at = models.DateField(verbose_name="Дата последнего изменения", auto_now=True)
 
+    is_published = models.BooleanField(
+        default=False, verbose_name="Статус публикации", help_text="Продукт опубликован? (да/нет)"
+    )
+
     def __str__(self):
         """Метод для строкового отображения информации о продукте"""
         return f"{self.name}, относится к категории {self.category}, цена: {self.price}"
@@ -63,6 +67,9 @@ class Product(models.Model):
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         ordering = ["name", "category", "price"]
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product"),
+        ]
 
 
 class Contact(models.Model):
