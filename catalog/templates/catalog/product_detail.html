@@ -15,6 +15,9 @@
                     <h2 class="card-title pricing-card-title">{{ product.price }} руб.</h2>
                     <p>Категория: {{ product.category }}</p>
                     <p>Описание: {{ product.description }}</p>
+                    {% if not product.is_published %}
+                        <p>Продукт снят с публикации</p>
+                    {% endif %}
                     <a class="btn btn-primary" href="{% url 'catalog:product_list' %}" role="button">Каталог</a>
                 </div>
             </div>

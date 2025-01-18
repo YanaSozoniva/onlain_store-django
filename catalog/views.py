@@ -1,9 +1,26 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404, redirect
 
-from catalog.forms import ProductForm
+
+from catalog.forms import ProductForm, ProductModeratorForm
 from django.urls import reverse_lazy, reverse
 from catalog.models import Product, Contact
-from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView, UpdateView, View
+
+
+class UnpublishProductView(LoginRequiredMixin, View):
+
+    def post(self, request, pk):
+        product = get_object_or_404(Product, id=pk)
+
+        if not request.user.has_perm('catalog.can_unpublish_product'):
+            raise PermissionDenied("У вас нет права на отмену публикации продукции")
+
+        product.is_published = False
+        product.save()
+
+        return redirect('catalog:product_detail', pk=pk)
 
 
 class CatalogListViews(ListView):
@@ -51,7 +68,18 @@ class CatalogUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
 
+    # def get_form_class(self):
+    #     user = self.request.user
+    #     if user == self.object.owner:
+    #         return ProductForm
+    #     if user.has_perm('catalog.catalog.can_unpublish_product'):
+    #         return ProductModeratorForm("У вас нет прав для отмены публикации продукта.")
+    #     raise PermissionDenied
 
-class CatalogDeleteView(DeleteView):
+
+class CatalogDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
+    permission_required = 'catalog.delete_product'
+
+

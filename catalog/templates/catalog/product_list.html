@@ -21,6 +21,12 @@
                     <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}" role="button">Подробнее</a>
                     <a class="btn btn-primary" href="{% url 'catalog:product_delete' product.pk %}" role="button">Удалить</a>
                     <a class="btn btn-primary" href="{% url 'catalog:product_update' product.pk %}" role="button">Редактировать</a>
+                     <form action="{% url 'catalog:unpublish_product' product.pk %}" method="post">
+                        {% csrf_token %}
+                         <button class="btn btn-primary">Отмена публикации продукта</button>
+                    </form>
+
+
                     {% endif %}
                 </div>
             </div>
