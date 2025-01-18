@@ -59,6 +59,13 @@ class CatalogCreateView(LoginRequiredMixin, CreateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product_list")
 
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
+
 
 class CatalogUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
@@ -68,16 +75,25 @@ class CatalogUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
 
-    # def get_form_class(self):
-    #     user = self.request.user
-    #     if user == self.object.owner:
-    #         return ProductForm
-    #     if user.has_perm('catalog.catalog.can_unpublish_product'):
-    #         return ProductModeratorForm("У вас нет прав для отмены публикации продукта.")
-    #     raise PermissionDenied
+    def get_object(self,  queryset=None):
+        product = super().get_object(queryset)
+        user = self.request.user
+
+        if product.owner != user:
+            raise PermissionDenied
+
+        return product
 
 
-class CatalogDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class CatalogDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
-    permission_required = "catalog.delete_product"
+
+    def get_object(self,  queryset=None):
+        product = super().get_object(queryset)
+        user = self.request.user
+
+        if product.owner != user and not user.has_perm('catalog.delete_product'):
+            raise PermissionDenied
+
+        return product
