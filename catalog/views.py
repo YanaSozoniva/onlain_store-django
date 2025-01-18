@@ -14,13 +14,13 @@ class UnpublishProductView(LoginRequiredMixin, View):
     def post(self, request, pk):
         product = get_object_or_404(Product, id=pk)
 
-        if not request.user.has_perm('catalog.can_unpublish_product'):
+        if not request.user.has_perm("catalog.can_unpublish_product"):
             raise PermissionDenied("У вас нет права на отмену публикации продукции")
 
         product.is_published = False
         product.save()
 
-        return redirect('catalog:product_detail', pk=pk)
+        return redirect("catalog:product_detail", pk=pk)
 
 
 class CatalogListViews(ListView):
@@ -80,6 +80,4 @@ class CatalogUpdateView(LoginRequiredMixin, UpdateView):
 class CatalogDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
-    permission_required = 'catalog.delete_product'
-
-
+    permission_required = "catalog.delete_product"

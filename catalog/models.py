@@ -1,5 +1,6 @@
 from django.db import models
 from catalog.validator import FileSizeValidator, ImageFormatValidator
+from users.models import User
 
 
 class Category(models.Model):
@@ -52,6 +53,14 @@ class Product(models.Model):
     updated_at = models.DateField(verbose_name="Дата последнего изменения", auto_now=True)
 
     is_published = models.BooleanField(default=False, verbose_name="Статус публикации")
+    owner = models.ForeignKey(
+        User,
+        verbose_name="Владелец",
+        help_text="Укажите владельца собаки",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
 
     def __str__(self):
         """Метод для строкового отображения информации о продукте"""
