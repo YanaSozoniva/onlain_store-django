@@ -31,4 +31,4 @@ class UserUpdateViews(UpdateView):
     model = User
     template_name = "users/edit_form.html"
     form_class = UserEditForm
-    success_url = reverse_lazy("users:login")
+    success_url = reverse_lazy("catalog:product_list")

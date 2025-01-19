@@ -19,8 +19,12 @@
                 <div class="card-body">
                     <p>Содержание статьи: {{ art.content | truncatechars:100 }}</p>
                    <a class="btn btn-primary" href="{% url 'blog:blog_detail' art.pk %}" role="button">Читать статью</a>
+                    {% if "blog.change_blog" in perms %}
                     <a class="btn btn-primary" href="{% url 'blog:blog_update' art.pk %}" role="button">Изменить статью</a>
+                    {% endif %}
+                    {% if "blog.change_blog" in perms %}
                     <a class="btn btn-primary" href="{% url 'blog:blog_delete' art.pk %}" role="button">Удалить статью</a>
+                    {% endif %}
 
                 </div>
             </div>
