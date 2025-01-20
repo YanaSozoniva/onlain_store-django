@@ -1,10 +1,11 @@
 from django.contrib.auth import login
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
-from users.forms import UserRegisterForm
+from users.forms import UserRegisterForm, UserEditForm
+from users.models import User
 
 
 class UserCreateViews(CreateView):
@@ -24,3 +25,10 @@ class UserCreateViews(CreateView):
         recipient_list = [user_email]
         from_email = EMAIL_HOST_USER
         send_mail(subject, message, from_email, recipient_list)
+
+
+class UserUpdateViews(UpdateView):
+    model = User
+    template_name = "users/edit_form.html"
+    form_class = UserEditForm
+    success_url = reverse_lazy("catalog:product_list")

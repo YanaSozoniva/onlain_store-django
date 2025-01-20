@@ -16,9 +16,11 @@
     <h1 class="display-4">Блок</h1>
     <p class="lead">Блок статьей о чем-то или о ком-то, в общем-то не так уж и важно о чем</p>
 </div>
+   {% if "blog.add_blog" in perms %}
 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'blog:blog_create' %}">Добавить новую статью</a>
+         <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'blog:blog_create' %}">Добавить новую статью</a>
       </div>
+{% endif %}
 {% block content %}
 {% endblock %}
 
