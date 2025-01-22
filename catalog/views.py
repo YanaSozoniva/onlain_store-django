@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
+from django.core.cache import cache
 
 
-from catalog.forms import ProductForm, ProductModeratorForm
+from catalog.forms import ProductForm
 from django.urls import reverse_lazy, reverse
 from catalog.models import Product, Contact
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView, UpdateView, View
@@ -27,6 +28,13 @@ class CatalogListViews(ListView):
     model = Product
     template_name = "product_list.html"
     paginate_by = 3
+
+    def get_queryset(self):
+        queryset = cache.get('product_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('product_queryset', queryset, 60 * 10)  # Кешируем данные на 10 минут
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
