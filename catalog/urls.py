@@ -9,6 +9,8 @@ from catalog.views import (
     CatalogDeleteView,
     CatalogUpdateView,
     UnpublishProductView,
+    CategoryListViews,
+    CategoryProductsDetailView
 )
 
 
@@ -22,4 +24,6 @@ urlpatterns = [
     path("catalog/<int:pk>/delete/", CatalogDeleteView.as_view(), name="product_delete"),
     path("catalog/<int:pk>/update/", CatalogUpdateView.as_view(), name="product_update"),
     path("catalog/unpublish/<int:pk>/", UnpublishProductView.as_view(), name="unpublish_product"),
+    path("catalog/category/", CategoryListViews.as_view(), name="category_list"),
+    path("catalog/product_category/<int:pk>/", cache_page(60*10)(CategoryProductsDetailView.as_view()), name="product_category"),
 ]

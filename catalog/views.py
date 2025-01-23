@@ -3,11 +3,29 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.core.cache import cache
 
-
 from catalog.forms import ProductForm
 from django.urls import reverse_lazy, reverse
-from catalog.models import Product, Contact
+from catalog.models import Product, Contact, Category
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView, UpdateView, View
+from catalog.services import get_products_by_category
+
+
+class CategoryListViews(ListView):
+    model = Category
+    template_name = "category_list.html"
+
+
+class CategoryProductsDetailView(DetailView):
+    model = Category
+    template_name = "catalog/product_category.html"
+
+    def get_context_data(self, **kwargs):
+        # Получаем стандартный контекст данных из родительского класса
+        context = super().get_context_data(**kwargs)
+        # Получаем ID категории из объекта
+        category = self.object.id
+        context['products_category'] = get_products_by_category(category)
+        return context
 
 
 class UnpublishProductView(LoginRequiredMixin, View):
