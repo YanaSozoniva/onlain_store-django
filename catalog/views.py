@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.core.cache import cache
@@ -24,7 +24,7 @@ class CategoryProductsDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         # Получаем ID категории из объекта
         category = self.object.id
-        context['products_category'] = get_products_by_category(category)
+        context["products_category"] = get_products_by_category(category)
         return context
 
 
@@ -48,10 +48,10 @@ class CatalogListViews(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        queryset = cache.get('product_queryset')
+        queryset = cache.get("product_queryset")
         if not queryset:
             queryset = super().get_queryset()
-            cache.set('product_queryset', queryset, 60 * 10)  # Кешируем данные на 10 минут
+            cache.set("product_queryset", queryset, 60 * 10)  # Кешируем данные на 10 минут
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -101,7 +101,7 @@ class CatalogUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
 
-    def get_object(self,  queryset=None):
+    def get_object(self, queryset=None):
         product = super().get_object(queryset)
         user = self.request.user
 
@@ -115,11 +115,11 @@ class CatalogDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
 
-    def get_object(self,  queryset=None):
+    def get_object(self, queryset=None):
         product = super().get_object(queryset)
         user = self.request.user
 
-        if product.owner != user and not user.has_perm('catalog.delete_product'):
+        if product.owner != user and not user.has_perm("catalog.delete_product"):
             raise PermissionDenied
 
         return product
