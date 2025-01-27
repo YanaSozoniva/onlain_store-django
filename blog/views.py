@@ -35,20 +35,20 @@ class BlogCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Blog
     fields = ["title", "photo", "content", "is_published"]
     success_url = reverse_lazy("blog:blog_list")
-    permission_required = 'blog.add_blog'
+    permission_required = "blog.add_blog"
 
 
 class BlogDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Blog
     success_url = reverse_lazy("blog:blog_list")
-    permission_required = 'blog.delete_blog'
+    permission_required = "blog.delete_blog"
 
 
 class BlogUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Blog
     fields = ["title", "photo", "content", "is_published"]
     success_url = reverse_lazy("blog:blog_list")
-    permission_required = 'blog.change_blog'
+    permission_required = "blog.change_blog"
 
     def get_success_url(self):
         return reverse("blog:blog_detail", args=[self.kwargs.get("pk")])

@@ -47,9 +47,3 @@ class ProductForm(StyleFormMixin, ModelForm):
                 "Цена ниже плинтуса!!! Мы не можем работать в убыток!!! Будьте любезны исправить это НЕМЕДЛЕНО!"
             )
         return price
-
-
-class ProductModeratorForm(StyleFormMixin, ModelForm):
-    class Meta:
-        model = Product
-        fields = ["is_published"]
